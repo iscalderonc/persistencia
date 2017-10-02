@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Librery AngularJS, Bootstrap , Jquery  -->
+	
+<!--<script type="text/javascript" src="../../js/lib/node_modules/bootstrap/dist/css/bootstrap.min.css"></script>-->
+
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script type="text/javascript" src="../../js/lib/jquery/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="../../js/lib/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/lib/node_modules/angular/angular.min.js"></script>
+	
+	<!-- Controller AngularJS -->
+	<script type="text/javascript" src="../../js/controller/bookStore.js"></script>
+	<script type="text/javascript" src="../../js/service/bookService.js"></script>
+
+	<!-- CSS -->
+	<style type="text/css">
+	  .css-form input.ng-invalid.ng-touched { background-color: #FA787E; }
+  	  .css-form input.ng-valid.ng-touched { background-color: #78FA89; }
+	</style>
+	
+	<!-- Iconos -->
+<!-- 	<link href="../../css/icons.css" rel="stylesheet"> -->
+	
+	<link rel="stylesheet" type="text/css" href="../../css/sytle.css">
+	
+</head>
+<body ng-app="bookStoreApp">
+	<div ng-controller="bookStoreCtrl" class="container" ng-init="init()">
+		
+		<div style="position: relative;">
+			<div style="position: absolute; left: 1px; top: 1px;">
+	    		<h4 class="text-left">{{titleWelcome}}</h4>
+		    </div>
+		</div>
+		<div class="row">
+	    	<div class="span12">
+	    		<h1 class="text-center">{{titlePresentation}}</h1>
+	    	</div>
+	    </div>
+	     
+		<div class="row">
+				<div class="col-md-4">
+					<form ng-submit="submit()" name="form" class="form-horizontal" novalidate>
+						<div class="panel panel-primary">
+					      <div class="panel-heading">Book</div>
+					      <div class="panel-body">
+					      	<div class="form-group">
+					      		<label for="nameInput" class="col-sm-3 control-label">Name</label>
+					      		<div class="col-sm-2">
+					      			<input type="hidden" ng-model="book.id"/>
+					      			<input type="text" ng-model="book.name" id="nameInput" placeholder="Name of the book" required/>
+					      		</div>
+					      		<!--
+					      		<div class="alert alert-danger fade in" ng-show="form.nameInput.$invalid">
+	    								<strong>Expected Value!</strong>
+								</div>
+								 -->
+					      	</div>
+					      	
+					      	<div class="form-group">
+					      		<label for="authorInput" class="col-sm-3 control-label">Author</label>
+					      		<div class="col-sm-2">
+					      			<input type="text" ng-model="book.author" id="authorInput" placeholder="Author of the book" required/>
+					      		</div>
+					      		<!--
+					      		<div class="alert alert-danger fade in" ng-show="form.authorInput.$invalid">
+	    								<strong>Expected Value!</strong>
+								</div>
+								-->
+					      	</div>
+					      	
+					      	<div class="form-group">
+					      		<label for="categoryInput" class="col-sm-3 control-label">Category</label>
+					      		<div class="col-sm-2">
+					      			<select ng-options="item as item.description for item in categorys track by item.number" ng-model="book.category"></select>
+					      		</div>
+					      	</div>
+					      	
+					      	<div class="form-group">
+					      		<label for="pageInput" class="control-label col-sm-3">Page</label>
+					      		<div class="col-sm-2">
+					      			<input type="number" id="pageInput" placeholder="Page" ng-model="book.page" name="bookPage" min="1" max="1000" integer required/>
+					      		</div>
+		    					<div class="col-sm-10 alert alert-danger fade in" ng-show="form.bookPage.$error.min || form.bookPage.$error.max">
+	    							<strong>The value must be in range 1 to 999!</strong>
+								</div>
+					      	</div>
+
+					      	<div class="form-group">
+					      		<label for="priceInput" class="col-sm-3 control-label">Price</label>
+					      		<div class="col-sm-2">
+					      			<input type="number" id="priceInput" placeholder="Price book" ng-model="book.price" name="bookPrice" min="1" max="99999" decimal required/>
+					      		</div>
+					      		<div class="col-sm-10 alert alert-danger fade in" ng-show="form.bookPrice.$error.min || form.bookPrice.$error.max">
+	    							<strong>The price must be in range 1 to 99999!</strong>
+								</div>
+					      	</div>
+					      	
+					      </div>
+					    </div>
+					    <div class="col-md-2">
+					    	<input type="submit" class="{{buttonClass}}" value="{{buttonSubmit}}" id="submit" ng-disabled="form.$invalid" />
+					    </div>
+				</form>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-info">
+			      <div class="panel-heading">Registered data</div>
+			      <div class="panel-body" ng-show="!bookCategorys">
+			      	<div class="container-fluid">
+				      <label class="col-sm-3 control-label">Name</label>
+			      	  <em><label class="col-sm-9" ng-bind="book.name"></label></em>
+				    </div>
+				    <br/>
+				    <div class="container-fluid">
+				      <label class="col-sm-3 control-label">Author</label>
+				      <em><label class="col-sm-9" ng-bind="book.author"></label></em>
+				    </div>
+				    <br/>
+				    <div class="container-fluid">
+				      <label class="col-sm-3 control-label">Category</label>
+				      <em><label class="col-sm-9">{{book.category.description}}</label></em>
+				    </div>
+				    <br/>
+				    <div class="container-fluid">
+				      <label class="col-sm-3 control-label">Page</label>
+				      <em><label class="col-sm-9">{{book.page}}</label></em>
+				    </div>
+				    <br/>
+				    <div class="container-fluid">
+				      <label class="col-sm-3 control-label">Price</label>
+				      <em><label class="col-sm-9">{{book.price | currency}}</label></em>
+				    </div>
+			      </div>
+			      
+			      <div class="panel-body" ng-show="bookCategorys">
+						<div class="row">
+						    <table class="table table-hover">
+							    <thead>
+							    	<tr>
+							    		<th>Category</th>
+							    		<th>Count</th>
+							    	</tr>
+							    </thead>
+							     <tbody>
+							    	<tr ng-repeat="category in bookCategorys" >
+							    		<td>{{category.description}}</td>
+										<td>{{category.number}}</td>
+							    	</tr>
+							    </tbody>
+						    </table>
+					    </div>
+					</div>
+			      
+			    </div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-success">
+					<div class="panel-heading">Shopping cart</div>
+					<div class="panel-body">
+						<div class="row">
+						    <table class="table table-hover">
+							    <thead>
+							    	<tr>
+							    		<th>#</th>
+							    		<th>Name</th>
+							    		<th>Price</th>
+							    	</tr>
+							    </thead>
+							     <tbody>
+							    	<tr ng-repeat="item in items" >
+							    		<td>{{item.number}}</td>
+							    		<td>{{item.description}}</td>
+							    		<td>{{item.amount | currency}}</td>
+							    	</tr>
+							    </tbody>
+						    </table>
+					    </div>
+					</div>
+				</div>
+				
+				<div ng-show="totalPay">
+	    			<div class="col-sm-8">
+	    				<h4 class="text-right">Total Pay</h4>
+	    			</div>
+	    			<div class="col-sm-4">
+	    				<h4 class="text-left">{{totalPay | currency}}</h4>
+	    			</div>
+	    		</div>
+			</div>
+	    </div>
+	    
+	    <br>
+	    
+	    <div class="row">
+		    <div class="col-md-12"> <!--ng-show="showMessage"  -->
+		    	<div class="{{alertClass}}">
+    				<strong>{{messageStatus}}</strong> {{message}}
+				</div>
+		    </div>
+	    </div>
+	    
+	    <div class="h-divider"></div>
+	    
+	    <br>
+	    
+	    <div class="row">
+	    	<div class="container">
+	    		<div class="col-md-6">
+   			    	<label for="searchInput" class="col-sm-2 control-label">Search</label>
+		      		<div class="col-sm-3">
+		      			 <input type="search" ng-model="filterBook" placeholder="Search books..." aria-label="Search books..." />
+		      		</div>
+	    		</div>
+	    	</div> 
+	    </div>
+	    
+	    <br>
+	    
+	    <div class="row">
+		    <table class="table table-hover example-animate-container">
+			    <thead>
+			    	<tr>
+			    		<th>&nbsp</th>
+			    		<th>Name</th>
+			    		<th>Author</th>
+			    		<th>Category</th>
+			    		<th>Page</th>
+			    		<th>Price</th>
+			    		<th>&nbsp</th>
+			    	</tr>
+			    </thead>
+			     <tbody>
+			    	<tr class="animate-repeat" ng-repeat="book in books | filter:filterBook as results" >
+			    		<td>
+				    		<button class="btn btn-warning" ng-click="edit(book.id)">Edit</button>
+<!-- 				    		<span class="icon icon-home icon-2x" ng-click="edit(book.id)"></span> -->
+			    			<button class="btn btn-danger" ng-click="deleteB(book.id)" >Delete</button>
+<!-- 			    			<span class="icon icon-logout icon-2x" ng-click="deleteB(book.id)"></span> -->
+			    		</td>
+			    		<td>{{book.name}}</td>
+			    		<td>{{book.author}}</td>
+			    		<td>{{book.category}}</td>
+			    		<td>{{book.page}}</td>
+			    		<td>{{book.price | currency}}</td>
+			    		<td>
+				    		<button class="btn btn-primary" ng-click="addItem(book.id)">Buy</button>
+			    		</td>
+			    	</tr>
+			    	<tr class="animate-repeat" ng-if="results.length === 0">
+			    		<td colspan="4">
+							<strong>No results found...</strong>		
+						</td>
+			    	</tr>
+			    </tbody>
+		    </table>
+	    </div>
+	    
+	    <div class="row" ng-show="totalPay">
+	    	<div class="col-sm-10">
+	    		<h3 class="text-right">Total Pay</h3>
+	    	</div>
+	    	<div class="col-sm-2">
+	    		<h2 class="text-left">{{totalPay | currency}}</h2>
+	    	</div>
+	    </div>
+	    
+	</div>
+</body>
+</html>

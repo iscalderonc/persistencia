@@ -1,0 +1,9 @@
+Reglas de Negocio
+
+- Cada compra genera al menos un punto virtual
+- Se puede canjear los puntos por libros
+X No se permite ingresar libros duplicados
+X Solo se permite ingresar mas de 5 libros por categoria
+X Si compran menos de 1000 MN otorgar un descuento del 10% en su compra.
+X Si compran mas de 1000 MN otorgar un libro gratis.
+X Aplicar el 10% de descuento a aquellos libros que pertenezcan a las Categorias (COMPUTATION y SCIENCE). El porcentaje es adicional a los promociones existentes.  

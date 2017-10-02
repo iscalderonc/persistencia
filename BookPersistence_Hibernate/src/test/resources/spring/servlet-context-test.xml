@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<context:component-scan base-package="com.baufest.josm2.persistence" />
+	<!-- 
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+ 	    <beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+ 	    <beans:property name="url" value="jdbc:oracle:thin:@localhost:1522:XE" />
+ 	    <beans:property name="username" value="TEST_USER" />
+ 	    <beans:property name="password" value="TEST_USER" />
+ 	</beans:bean>
+ 	 -->
+ 	<beans:bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+ 	    <beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+ 	    <beans:property name="url" value="jdbc:oracle:thin:@localhost:1522:XE" />
+ 	    <beans:property name="username" value="TEST_USER" />
+ 	    <beans:property name="password" value="TEST_USER" />
+ 	    <beans:property name="initialSize" value="0" />
+ 	    <beans:property name="maxActive" value="1" />
+ 	    <beans:property name="maxIdle" value="1" />
+ 	    <beans:property name="minIdle" value="1" />
+ 	</beans:bean>
+ 	
+ 	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
+		<beans:property name="dataSource" ref="dataSource"/>
+		<beans:property name="packagesToScan" value="com.baufest.josm2.model" />
+	    <beans:property name="hibernateProperties">
+	      	<beans:value>
+	        	hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+	        	use_sql_comments=true  
+	        	hibernate.show_sql=true
+	        	hibernate.format_sql=true                                     
+	      	</beans:value>
+	    </beans:property>
+	  
+	</beans:bean>
+	
+	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <beans:property name="sessionFactory" ref="sessionFactory" />
+    </beans:bean>
+	
+</beans:beans>
